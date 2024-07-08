@@ -1,10 +1,12 @@
 package com.project.apartment.global.config;
 
+import com.project.apartment.global.enums.AllPermitPath;
 import com.project.apartment.global.jwt.JwtAuthenticationFilter;
 import com.project.apartment.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,6 +29,11 @@ public class WebSecurityConfig {
                 .formLogin(f -> f.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(c -> c.frameOptions(f -> f.disable()).disable())
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.GET, AllPermitPath.toArrayPath(HttpMethod.GET)).permitAll();
+                    auth.requestMatchers(HttpMethod.POST, AllPermitPath.toArrayPath(HttpMethod.POST)).permitAll();
+                    auth.anyRequest().authenticated();
+                })
                 .logout(logout -> logout.disable())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
