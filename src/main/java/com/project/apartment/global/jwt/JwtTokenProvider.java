@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
-    private static final String BEARER_TYPE = "Bearer";
+    public static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -40,7 +40,7 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtTokenDto generateTokenDto(Authentication authentication) {
+    public JwtTokenDto generateToken(Authentication authentication) {
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -50,6 +50,9 @@ public class JwtTokenProvider {
 
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+
+
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())       // payload "sub": "name"
                 .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
@@ -67,6 +70,7 @@ public class JwtTokenProvider {
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
                 .build();
     }
