@@ -1,4 +1,4 @@
-package com.project.apartment.domain.member;
+package com.project.apartment.domain.user.member;
 
 import com.project.apartment.global.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;

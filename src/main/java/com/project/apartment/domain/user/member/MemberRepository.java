@@ -1,4 +1,4 @@
-package com.project.apartment.domain.member;
+package com.project.apartment.domain.user.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
