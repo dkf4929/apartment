@@ -5,6 +5,7 @@ import org.springframework.http.HttpMethod;
 import java.util.Arrays;
 
 public enum AllPermitPath {
+    LOGIN(HttpMethod.POST, "/login", "", "로그인"),
     MEMBER_CREATE(HttpMethod.POST, "/member", "", "회원 저장"),
     SWAGGER(HttpMethod.GET, "/**/swagger-ui/**", "/swagger-ui.*", "스웨거"),
     SWAGGER_RESOURCE(HttpMethod.GET, "/**/swagger-resources/**", "/swagger-resources.*", "스웨거"),
