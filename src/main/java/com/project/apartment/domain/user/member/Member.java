@@ -1,7 +1,6 @@
-package com.project.apartment.domain.member;
+package com.project.apartment.domain.user.member;
 
 import com.project.apartment.domain.enums.Gender;
-import com.project.apartment.domain.member.dto.MemberSaveDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -62,12 +61,12 @@ public class Member implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.getPassword();
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return this.getName();
+        return this.name;
     }
 
     @Override
