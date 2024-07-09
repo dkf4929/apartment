@@ -1,6 +1,7 @@
 package com.project.apartment.global.config;
 
 import com.project.apartment.global.enums.AllPermitPath;
+import com.project.apartment.global.enums.MemberPermitPath;
 import com.project.apartment.global.jwt.JwtAuthenticationFilter;
 import com.project.apartment.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.GET, AllPermitPath.toArrayPath(HttpMethod.GET)).permitAll();
                     auth.requestMatchers(HttpMethod.POST, AllPermitPath.toArrayPath(HttpMethod.POST)).permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers(HttpMethod.GET, MemberPermitPath.toArrayPath(HttpMethod.GET)).hasRole("USER");
+                    auth.requestMatchers(HttpMethod.POST, MemberPermitPath.toArrayPath(HttpMethod.POST)).hasRole("USER");
+                    auth.anyRequest().permitAll();
                 })
                 .logout(logout -> logout.disable())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
